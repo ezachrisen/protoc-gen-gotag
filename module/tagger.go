@@ -53,23 +53,31 @@ func (m mod) Execute(targets map[string]pgs.File, packages map[string]pgs.Packag
 		tags.AddTagsToXXXFields(xt)
 
 		gfname := m.Context.OutputPath(f).SetExt(".go").String()
-
+		module := m.Parameters().Str("module")
 		outdir := m.Parameters().Str("outdir")
 		filename := gfname
-		if outdir != "" {
-			filename = filepath.Join(outdir, gfname)
+
+		if module != "" {
+			filename = strings.TrimPrefix(filename, module+"/")
 		}
+
+		if outdir != "" {
+			filename = filepath.Join(outdir, filename)
+		} // else {
+		// 	filename = "." + filename
+		// }
+
+		//panic("outdir=" + outdir + "\nmodule = " + module + "\ngfname = " + gfname + "\nFilename: " + filename)
 
 		fs := token.NewFileSet()
 		fn, err := parser.ParseFile(fs, filename, nil, parser.ParseComments)
 		m.CheckErr(err)
-
 		m.CheckErr(Retag(fn, tags))
 
 		var buf strings.Builder
 		m.CheckErr(printer.Fprint(&buf, fs, fn))
 
-		m.OverwriteGeneratorFile(gfname, buf.String())
+		m.OverwriteGeneratorFile(filename, buf.String())
 	}
 
 	return m.Artifacts()

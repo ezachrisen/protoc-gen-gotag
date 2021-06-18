@@ -88,6 +88,11 @@ the "outdir" parameter.  If you experience any `no such file or directory`, erro
         	--gotag_out=outdir="./pkg":./pkg example/example.proto
 ``` 
 
+## Using the Modules flag
+
+An optino has been added 
+
+
 ### Note
  
  This should always run after protocol buffer compiler has run. The command such as the one below will fail/produce unexpected results.
