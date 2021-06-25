@@ -2,35 +2,24 @@ syntax = "proto3";
 
 package example;
 
-import "tagger/tagger.proto";
+import "firestore/firestore.proto";
 
-option go_package = "github.com/srikrsna/protoc-gen-gotag/example";
+option go_package = "alticeusa.com/maui/protoc-gen-firestore/example";
 
 message Example {
-    string with_new_tags = 1 [(tagger.tags) = "graphql:\"withNewTags,optional\"" ];
-    string with_new_multiple = 2 [(tagger.tags) = "graphql:\"withNewTags,optional\" xml:\"multi,omitempty\"" ];
-    
-    optional string replace_default = 3 [(tagger.tags) = "json:\"replacePrevious\""] ; 
-
-    oneof one_of {
-        option (tagger.oneof_tags) = "graphql:\"withNewTags,optional\"";
-        string a = 5 [(tagger.tags) = "json:\"A\""];
-        int32 b_jk = 6 [(tagger.tags) = "json:\"b_Jk\""];
-    }
+  option (firestore.generate_firestore) = true;
+  string name = 1;
+  string something = 2;
+  int32 another = 3;
 }
 
-message SecondMessage {
-    string with_new_tags = 1 [(tagger.tags) = "graphql:\"withNewTags,optional\"" ];
-    string with_new_multiple = 2 [(tagger.tags) = "graphql:\"withNewTags,optional\" xml:\"multi,omitempty\"" ];
-    
-    string replace_default = 3 [(tagger.tags) = "json:\"replacePrevious\""] ; 
+message ExampleRequest {
+  string name = 1;
+  double amount = 3;
 }
+  
 
-message ThirdExample {
-    message InnerExample {
-        string id = 1 [(tagger.tags) = "json:\"yes\""];
-        int32 yes = 2 [(tagger.tags) = "json:\"id\""];
-    }
-
-    InnerExample inner_example = 1 [(tagger.tags) = "json:\"inner\""];
+service ExampleService {
+  rpc CreateExample(Example) returns (Example) {}
+  rpc GetExample(ExampleRequest) returns (Example) {}
 }

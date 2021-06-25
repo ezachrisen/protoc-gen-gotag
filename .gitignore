@@ -13,3 +13,6 @@
 .idea/
 .vscode/
 vendor/
+
+# mac stuff
+.DS_Store
