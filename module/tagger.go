@@ -73,7 +73,6 @@ func (m mod) Execute(targets map[string]pgs.File, packages map[string]pgs.Packag
 
 		fs := token.NewFileSet()
 		fn, err := parser.ParseFile(fs, inputFilename, nil, parser.ParseComments)
-		m.Logf("module=%s\noutdir=%s\ninput filename=%s,output filename=%s\n", module, outdir, inputFilename, outputFilename)
 		m.CheckErr(err)
 		m.CheckErr(Retag(fn, tags))
 

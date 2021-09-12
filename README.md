@@ -3,6 +3,9 @@
 PGGT is a protoc plugin used to add/replace struct tags on generated protobuf messages.
 Get  it using ```go get github.com/srikrsna/protoc-gen-gotag ```It supports the following features,
 
+## About this fork
+This fork adds the module flag, which works the same way as the protoc-gen-go's module flag.  
+
 ## Add/Replace Tags
 
 New tags like xml, sql, bson etc... can be added to struct messages of protobuf. Example
@@ -88,9 +91,6 @@ the "outdir" parameter.  If you experience any `no such file or directory`, erro
         	--gotag_out=outdir="./pkg":./pkg example/example.proto
 ``` 
 
-## Using the Modules flag
-
-An optino has been added 
 
 
 ### Note
