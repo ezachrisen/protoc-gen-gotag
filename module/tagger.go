@@ -55,14 +55,16 @@ func (m mod) Execute(targets map[string]pgs.File, packages map[string]pgs.Packag
 		gfname := m.Context.OutputPath(f).SetExt(".go").String()
 		module := m.Parameters().Str("module")
 		outdir := m.Parameters().Str("outdir")
-		filename := gfname
+		outputFilename := gfname
+		inputFilename := gfname
 
 		if module != "" {
-			filename = strings.TrimPrefix(filename, module+"/")
+			outputFilename = strings.TrimPrefix(outputFilename, module+"/")
+			inputFilename = strings.TrimPrefix(inputFilename, module+"/")
 		}
 
 		if outdir != "" {
-			filename = filepath.Join(outdir, filename)
+			inputFilename = filepath.Join(outdir, inputFilename)
 		} // else {
 		// 	filename = "." + filename
 		// }
@@ -70,14 +72,14 @@ func (m mod) Execute(targets map[string]pgs.File, packages map[string]pgs.Packag
 		//panic("outdir=" + outdir + "\nmodule = " + module + "\ngfname = " + gfname + "\nFilename: " + filename)
 
 		fs := token.NewFileSet()
-		fn, err := parser.ParseFile(fs, filename, nil, parser.ParseComments)
+		fn, err := parser.ParseFile(fs, inputFilename, nil, parser.ParseComments)
+		m.Logf("module=%s\noutdir=%s\ninput filename=%s,output filename=%s\n", module, outdir, inputFilename, outputFilename)
 		m.CheckErr(err)
 		m.CheckErr(Retag(fn, tags))
 
 		var buf strings.Builder
 		m.CheckErr(printer.Fprint(&buf, fs, fn))
-
-		m.OverwriteGeneratorFile(filename, buf.String())
+		m.OverwriteGeneratorFile(outputFilename, buf.String())
 	}
 
 	return m.Artifacts()

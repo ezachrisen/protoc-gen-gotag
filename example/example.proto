@@ -10,7 +10,7 @@ message Example {
     string with_new_tags = 1 [(tagger.tags) = "graphql:\"withNewTags,optional\"" ];
     string with_new_multiple = 2 [(tagger.tags) = "graphql:\"withNewTags,optional\" xml:\"multi,omitempty\"" ];
     
-    optional string replace_default = 3 [(tagger.tags) = "json:\"replacePrevious\""] ; 
+     string replace_default = 3 [(tagger.tags) = "json:\"replacePrevious\""] ; 
 
     oneof one_of {
         option (tagger.oneof_tags) = "graphql:\"withNewTags,optional\"";
